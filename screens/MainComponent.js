@@ -1,22 +1,47 @@
-import { useState } from "react";
-import { COURSES } from "../shared/courses";
 import DirectoryScreen from "./DirectoryScreen";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import CourseInfoScreen from "./CourseInfoScreen";
+import Constants from "expo-constants";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const Main = () => {
-  const [courses, setCourses] = useState(COURSES);
-  const [selectedCourseId, setSelectedCourseId] = useState();
+const DirectoryNavigator = () => {
+  const Stack = createStackNavigator();
 
   return (
-    <View style={{ flex: 1 }}>
-      <DirectoryScreen
-        courses={courses}
-        onPress={(courseId) => setSelectedCourseId(courseId)}
+    <Stack.Navigator
+      initialRouteName="Directory"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#5637DD",
+        },
+        headerTintColor: "#fff",
+      }}
+    >
+      <Stack.Screen
+        name="Directory"
+        component={DirectoryScreen}
+        options={{ title: "Course Directory" }}
       />
-      <CourseInfoScreen
-        course={courses.filter((course) => course.id === selectedCourseId)[0]}
+      <Stack.Screen
+        name="CourseInfo"
+        component={CourseInfoScreen}
+        options={({ route }) => ({
+          title: route.params.course.name,
+        })}
       />
+    </Stack.Navigator>
+  );
+};
+
+const Main = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
+      }}
+    >
+      <DirectoryNavigator />
     </View>
   );
 };

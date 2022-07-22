@@ -1,7 +1,8 @@
 import RenderCourse from "../features/courses/RenderCourse";
 
-const CourseInfoScreen = (props) => {
-  return <RenderCourse course={props.course} />;
+const CourseInfoScreen = ({ route }) => {
+  const { course } = route.params;
+  return <RenderCourse course={course} />;
 };
 
 export default CourseInfoScreen;
