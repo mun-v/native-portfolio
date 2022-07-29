@@ -4,7 +4,7 @@ export const INSTRUCTORS = [
     // name: "Alice Castilow",
     image: require("../assets/images/Alice.jpg"),
     featured: false,
-    description: "Alice (Amira) Castilow: Founder of Amira Dance Productions",
+    description: "Alice (Amira) Castilow†: Founder of Amira Dance Productions",
   },
   {
     id: 1,
