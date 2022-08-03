@@ -1,26 +1,26 @@
-import { useState } from "react";
 import { FlatList } from "react-native";
-import { Avatar, ListItem } from "react-native-elements";
-import { COURSES } from "../shared/courses";
+import { Tile } from "react-native-elements";
+import { useSelector } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
 
 const DirectoryScreen = ({ navigation }) => {
-  const [courses, setCourses] = useState(COURSES);
+  const courses = useSelector((state) => state.courses);
 
   const renderDirectoryItem = ({ item: course }) => {
     return (
-      <ListItem onPress={() => navigation.navigate("CourseInfo", { course })}>
-        <Avatar source={course.image} rounded />
-        <ListItem.Content>
-          <ListItem.Title>{course.name}</ListItem.Title>
-          <ListItem.Subtitle>{course.description}</ListItem.Subtitle>
-        </ListItem.Content>
-      </ListItem>
+      <Tile
+        tile={course.name}
+        caption={course.description}
+        featured
+        onPress={() => navigation.navigate("CourseInfo", { course })}
+        imageSrc={{ uri: baseUrl + course.image }}
+      />
     );
   };
 
   return (
     <FlatList
-      data={courses}
+      data={courses.coursesArray}
       renderItem={renderDirectoryItem}
       keyExtractor={(item) => item.id.toString()}
     />

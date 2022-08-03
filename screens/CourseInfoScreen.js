@@ -1,11 +1,11 @@
 import RenderCourse from "../features/courses/RenderCourse";
 import { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { COMMENTS } from "../shared/comments";
+import { useSelector } from 'react-redux';
 
 const CourseInfoScreen = ({ route }) => {
   const { course } = route.params;
-  const [comments, setComments] = useState(COMMENTS);
+  const comments = useSelector((state) => state.comments);
   const [favorite, setFavorite] = useState(false);
 
   const renderCommentItem = ({ item }) => {
@@ -22,7 +22,7 @@ const CourseInfoScreen = ({ route }) => {
 
   return (
     <FlatList
-      data={comments.filter((comment) => comment.courseId === course.id)}
+      data={comments.commentsArray.filter((comment) => comment.courseId === course.id)}
       renderItem={renderCommentItem}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={{ marginHorizontal: 20, paddingVertical: 20 }}

@@ -1,13 +1,14 @@
 import { Text, View } from "react-native";
 import { Card, Icon } from "react-native-elements";
 import { StyleSheet } from "react-native";
+import { baseUrl } from '../../shared/baseUrl';
 
 const RenderCourse = (props) => {
   const { course } = props;
   if (course) {
     return (
       <Card containerStyle={styles.cardContainer}>
-        <Card.Image source={course.image}>
+        <Card.Image source={{ uri: baseUrl + course.image }}>
           <View style={{ justifyContent: "center", flex: 1 }}>
             <Text
               style={{
