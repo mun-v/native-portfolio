@@ -2,9 +2,37 @@ import { Text, ScrollView } from "react-native";
 import { Avatar, ListItem, Card } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import Loading from "../components/LoadingComponent";
 
 const AboutScreen = () => {
   const instructors = useSelector((state) => state.instructors);
+
+  if (instructors.isLoading) {
+    return (
+      <ScrollView>
+        <Mission />
+        <Card>
+          <Card.Title>Instructors</Card.Title>
+          <Card.Divider />
+          <Loading />
+        </Card>
+      </ScrollView>
+    );
+  }
+  if (instructors.errMess) {
+    return (
+      <ScrollView>
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <Mission />
+          <Card>
+            <Card.Title>Instructors</Card.Title>
+            <Card.Divider />
+            <Text>{instructors.errMess}</Text>
+          </Card>
+        </Animatable.View>
+      </ScrollView>
+    );
+  }
 
   const Founder = () => {
     return (
