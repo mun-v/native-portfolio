@@ -13,13 +13,13 @@ import HomeScreen from "./HomeScreen";
 import AboutScreen from "./AboutScreen";
 import ContactScreen from "./ContactScreen";
 import ADPLogo1 from "../assets/images/ADPLogo1.jpg";
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchInstructors } from '../features/instructors/instructorsSlice';
-import { fetchCourses } from '../features/courses/coursesSlice';
-import { fetchPromotions } from '../features/promotions/promotionsSlice';
-import { fetchComments } from '../features/comments/commentsSlice';
-
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchInstructors } from "../features/instructors/instructorsSlice";
+import { fetchCourses } from "../features/courses/coursesSlice";
+import { fetchPromotions } from "../features/promotions/promotionsSlice";
+import { fetchComments } from "../features/comments/commentsSlice";
+import ReservationScreen from "./ReservationScreen";
 
 const ContactNavigator = () => {
   const Stack = createStackNavigator();
@@ -33,6 +33,29 @@ const ContactNavigator = () => {
           headerLeft: () => (
             <Icon
               name="address-card"
+              type="font-awesome"
+              iconStyle={styles.stackIcon}
+              onPress={() => navigation.toggleDrawer()}
+            />
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ReservationNavigator = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator screenOptions={screenOptions}>
+      <Stack.Screen
+        name="Reservation"
+        component={ReservationScreen}
+        options={({ navigation }) => ({
+          title: "Reservation Search",
+          headerLeft: () => (
+            <Icon
+              name="music"
               type="font-awesome"
               iconStyle={styles.stackIcon}
               onPress={() => navigation.toggleDrawer()}
@@ -150,7 +173,7 @@ const Main = () => {
     dispatch(fetchPromotions());
     dispatch(fetchInstructors());
     dispatch(fetchComments());
-}, [dispatch]);
+  }, [dispatch]);
 
   return (
     <View
@@ -188,6 +211,22 @@ const Main = () => {
             drawerIcon: ({ color }) => (
               <Icon
                 name="list"
+                type="font-awesome"
+                size={24}
+                iconStyle={{ width: 24 }}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="ReserveClass"
+          component={ReservationNavigator}
+          options={{
+            title: "Reserve Class",
+            drawerIcon: ({ color }) => (
+              <Icon
+                name="music"
                 type="font-awesome"
                 size={24}
                 iconStyle={{ width: 24 }}
