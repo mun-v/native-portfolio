@@ -13,6 +13,12 @@ import HomeScreen from "./HomeScreen";
 import AboutScreen from "./AboutScreen";
 import ContactScreen from "./ContactScreen";
 import ADPLogo1 from "../assets/images/ADPLogo1.jpg";
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchInstructors } from '../features/instructors/instructorsSlice';
+import { fetchCourses } from '../features/courses/coursesSlice';
+import { fetchPromotions } from '../features/promotions/promotionsSlice';
+import { fetchComments } from '../features/comments/commentsSlice';
 
 
 const ContactNavigator = () => {
@@ -137,6 +143,15 @@ const CustomDrawerContent = (props) => (
 );
 
 const Main = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCourses());
+    dispatch(fetchPromotions());
+    dispatch(fetchInstructors());
+    dispatch(fetchComments());
+}, [dispatch]);
+
   return (
     <View
       style={{

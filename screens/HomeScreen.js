@@ -1,19 +1,18 @@
-import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Card } from "react-native-elements";
-import { COURSES } from "../shared/courses";
-import { PROMOTIONS } from "../shared/promotions";
-import { INSTRUCTORS } from "../shared/instructors";
+import { useSelector } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
 
 const FeaturedItem = ({ item }) => {
   if (item) {
     return (
       <Card containerStyle={{ padding: 0 }}>
-        <Card.Image source={item.image}>
+        <Card.Image source={{ uri: baseUrl + item.image }}>
+          {console.log(baseUrl + item.image)}
           <View style={{ justifyContent: "center", flex: 1 }}>
-            <Text style={{ color: "white", textAlign: "center", fontSize: 20 }}>
+            {/* <Text style={{ color: "white", textAlign: "center", fontSize: 20 }}>
               {item.name}
-            </Text>
+            </Text> */}
           </View>
         </Card.Image>
         <Text style={{ margin: 20 }}>{item.description}</Text>
@@ -24,13 +23,17 @@ const FeaturedItem = ({ item }) => {
 };
 
 const HomeScreen = () => {
-  const [courses, setCourses] = useState(COURSES);
-  const [promotions, setPromotions] = useState(PROMOTIONS);
-  const [instructors, setinstructors] = useState(INSTRUCTORS);
+  const courses = useSelector((state) => state.courses);
+  const promotions = useSelector((state) => state.promotions);
+  const instructors = useSelector((state) => state.instructors);
 
-  const featCourse = courses.find((item) => item.featured);
-  const featPromotion = promotions.find((item) => item.featured);
-  const featInstructor = instructors.find((item) => item.featured);
+  const featCourse = courses.coursesArray.find((item) => item.featured);
+  const featPromotion = promotions.promotionsArray.find(
+    (item) => item.featured
+  );
+  const featInstructor = instructors.instructorsArray.find(
+    (item) => item.featured
+  );
 
   return (
     <ScrollView>

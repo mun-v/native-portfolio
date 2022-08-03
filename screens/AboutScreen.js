@@ -1,10 +1,10 @@
 import { Text, ScrollView } from "react-native";
 import { Avatar, ListItem, Card } from "react-native-elements";
-import { INSTRUCTORS } from "../shared/instructors";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
 
 const AboutScreen = () => {
-  const [instructors, setInstructors] = useState(INSTRUCTORS);
+  const instructors = useSelector((state) => state.instructors);
 
   const Founder = () => {
     return (
@@ -73,9 +73,9 @@ const AboutScreen = () => {
       <Card>
         <Card.Title>Studio Instructors</Card.Title>
         <Card.Divider />
-        {instructors.map((instructor) => (
+        {instructors.instructorsArray.map((instructor) => (
           <ListItem key={instructor.id}>
-            <Avatar rounded source={instructor.image}></Avatar>
+            <Avatar rounded source={{ uri: baseUrl + instructor.image }} />
             <ListItem.Content>
               <ListItem.Title>{instructor.name}</ListItem.Title>
               <ListItem.Subtitle>{instructor.description}</ListItem.Subtitle>
