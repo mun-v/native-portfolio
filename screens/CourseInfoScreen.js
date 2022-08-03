@@ -1,12 +1,13 @@
 import RenderCourse from "../features/courses/RenderCourse";
-import { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
+import { toggleFavorite } from "../features/favorites/favoritesSlice";
 
 const CourseInfoScreen = ({ route }) => {
   const { course } = route.params;
   const comments = useSelector((state) => state.comments);
-  const [favorite, setFavorite] = useState(false);
+  const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
 
   const renderCommentItem = ({ item }) => {
     return (
@@ -22,7 +23,9 @@ const CourseInfoScreen = ({ route }) => {
 
   return (
     <FlatList
-      data={comments.commentsArray.filter((comment) => comment.courseId === course.id)}
+      data={comments.commentsArray.filter(
+        (comment) => comment.courseId === course.id
+      )}
       renderItem={renderCommentItem}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={{ marginHorizontal: 20, paddingVertical: 20 }}
@@ -30,8 +33,8 @@ const CourseInfoScreen = ({ route }) => {
         <>
           <RenderCourse
             course={course}
-            isFavorite={favorite}
-            markFavorite={() => setFavorite(true)}
+            isFavorite={favorites.includes(course.id)}
+            markFavorite={() => dispatch(toggleFavorite(course.id))}
           />
           <Text style={styles.commentsTitle}>Comments</Text>
         </>
