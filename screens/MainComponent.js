@@ -153,7 +153,7 @@ const DirectoryNavigator = () => {
         name="Directory"
         component={DirectoryScreen}
         options={({ navigation }) => ({
-          title: "Course Directory",
+          title: "Class Directory",
           headerLeft: () => (
             <Icon
               name="list"
@@ -231,7 +231,7 @@ const Main = () => {
           name="Directory"
           component={DirectoryNavigator}
           options={{
-            title: "Course Directory",
+            title: "Class Directory",
             drawerIcon: ({ color }) => (
               <Icon
                 name="list"
