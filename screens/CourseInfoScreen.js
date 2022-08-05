@@ -5,6 +5,7 @@ import { toggleFavorite } from "../features/favorites/favoritesSlice";
 import { useState } from "react";
 import { Input, Rating } from "react-native-elements";
 import { postComment } from "../features/comments/commentsSlice";
+import * as Animatable from "react-native-animatable";
 
 const CourseInfoScreen = ({ route }) => {
   const { course } = route.params;
@@ -52,77 +53,79 @@ const CourseInfoScreen = ({ route }) => {
   };
 
   return (
-    <>
-      <FlatList
-        data={comments.commentsArray.filter(
-          (comment) => comment.courseId === course.id
-        )}
-        renderItem={renderCommentItem}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ marginHorizontal: 20, paddingVertical: 20 }}
-        ListHeaderComponent={
-          <>
-            <RenderCourse
-              course={course}
-              isFavorite={favorites.includes(course.id)}
-              markFavorite={() => dispatch(toggleFavorite(course.id))}
-              onShowModal={() => setShowModal(!showModal)}
+    <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+      <>
+        <FlatList
+          data={comments.commentsArray.filter(
+            (comment) => comment.courseId === course.id
+          )}
+          renderItem={renderCommentItem}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ marginHorizontal: 20, paddingVertical: 20 }}
+          ListHeaderComponent={
+            <>
+              <RenderCourse
+                course={course}
+                isFavorite={favorites.includes(course.id)}
+                markFavorite={() => dispatch(toggleFavorite(course.id))}
+                onShowModal={() => setShowModal(!showModal)}
+              />
+              <Text style={styles.commentsTitle}>Comments</Text>
+            </>
+          }
+        />
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={showModal}
+          onRequestClose={() => setShowModal(!showModal)}
+        >
+          <View style={styles.modal}>
+            <Rating
+              showRating
+              startingValue={rating}
+              imageSize={40}
+              onFinishRating={(rating) => setRating(rating)}
+              style={{ paddingVertical: 10 }}
             />
-            <Text style={styles.commentsTitle}>Comments</Text>
-          </>
-        }
-      />
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={showModal}
-        onRequestClose={() => setShowModal(!showModal)}
-      >
-        <View style={styles.modal}>
-          <Rating
-            showRating
-            startingValue={rating}
-            imageSize={40}
-            onFinishRating={(rating) => setRating(rating)}
-            style={{ paddingVertical: 10 }}
-          />
-          <Input
-            placeholder="Author"
-            leftIcon={{ type: "font-awesome", name: "user-o" }}
-            leftIconContainerStyle={{ paddingRight: 10 }}
-            onChangeText={(author) => setAuthor(author)}
-            value={author}
-          />
-          <Input
-            placeholder="Comment"
-            leftIcon={{ type: "font-awesome", name: "comment-o" }}
-            leftIconContainerStyle={{ paddingRight: 10 }}
-            onChangeText={(text) => setText(text)}
-            value={text}
-          />
-          <View style={{ margin: 10 }}>
-            <Button
-              onPress={() => {
-                handleSubmit();
-                resetForm();
-              }}
-              color="#5637DD"
-              title="Submit"
-            ></Button>
+            <Input
+              placeholder="Author"
+              leftIcon={{ type: "font-awesome", name: "user-o" }}
+              leftIconContainerStyle={{ paddingRight: 10 }}
+              onChangeText={(author) => setAuthor(author)}
+              value={author}
+            />
+            <Input
+              placeholder="Comment"
+              leftIcon={{ type: "font-awesome", name: "comment-o" }}
+              leftIconContainerStyle={{ paddingRight: 10 }}
+              onChangeText={(text) => setText(text)}
+              value={text}
+            />
+            <View style={{ margin: 10 }}>
+              <Button
+                onPress={() => {
+                  handleSubmit();
+                  resetForm();
+                }}
+                color="#5637DD"
+                title="Submit"
+              ></Button>
+            </View>
+            <View styles={{ margin: 10 }}>
+              <Button
+                onPress={() => {
+                  setShowModal(!showModal);
+                  resetForm();
+                }}
+                color="#808080"
+                title="Cancel"
+              ></Button>
+            </View>
           </View>
-          <View styles={{ margin: 10 }}>
-            <Button
-              onPress={() => {
-                setShowModal(!showModal);
-                resetForm();
-              }}
-              color="#808080"
-              title="Cancel"
-            ></Button>
-          </View>
-        </View>
-      </Modal>
-    </>
+        </Modal>
+      </>
+    </Animatable.View>
   );
 };
 

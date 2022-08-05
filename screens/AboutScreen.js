@@ -3,6 +3,7 @@ import { Avatar, ListItem, Card } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import Loading from "../components/LoadingComponent";
+import * as Animatable from "react-native-animatable";
 
 const AboutScreen = () => {
   const instructors = useSelector((state) => state.instructors);
@@ -95,22 +96,24 @@ const AboutScreen = () => {
 
   return (
     <ScrollView>
-      <Founder></Founder>
-      <Mission></Mission>
-      <Vision></Vision>
-      <Card>
-        <Card.Title>Studio Instructors</Card.Title>
-        <Card.Divider />
-        {instructors.instructorsArray.map((instructor) => (
-          <ListItem key={instructor.id}>
-            <Avatar rounded source={{ uri: baseUrl + instructor.image }} />
-            <ListItem.Content>
-              <ListItem.Title>{instructor.name}</ListItem.Title>
-              <ListItem.Subtitle>{instructor.description}</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        ))}
-      </Card>
+      <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+        <Founder></Founder>
+        <Mission></Mission>
+        <Vision></Vision>
+        <Card>
+          <Card.Title>Studio Instructors</Card.Title>
+          <Card.Divider />
+          {instructors.instructorsArray.map((instructor) => (
+            <ListItem key={instructor.id}>
+              <Avatar rounded source={{ uri: baseUrl + instructor.image }} />
+              <ListItem.Content>
+                <ListItem.Title>{instructor.name}</ListItem.Title>
+                <ListItem.Subtitle>{instructor.description}</ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          ))}
+        </Card>
+      </Animatable.View>
     </ScrollView>
   );
 };
