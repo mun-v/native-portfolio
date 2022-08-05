@@ -1,4 +1,5 @@
-import { ScrollView, Text, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Text, View } from "react-native";
 import { Card } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
@@ -40,6 +41,12 @@ const HomeScreen = () => {
   const courses = useSelector((state) => state.courses);
   const promotions = useSelector((state) => state.promotions);
   const instructors = useSelector((state) => state.instructors);
+  const scaleValue = useRef(new Animated.Value(0)).current;
+  const scaleAnimation = Animated.timing(scaleValue, {
+    toValue: 1,
+    duration: 1500,
+    useNativeDriver: true,
+  });
 
   const featCourse = courses.coursesArray.find((item) => item.featured);
   const featPromotion = promotions.promotionsArray.find(
@@ -49,8 +56,12 @@ const HomeScreen = () => {
     (item) => item.featured
   );
 
+  useEffect(() => {
+    scaleAnimation.start();
+  }, []);
+
   return (
-    <ScrollView>
+    <Animated.ScrollView style={{ transform: [{ scale: scaleValue }] }}>
       <FeaturedItem
         item={featCourse}
         isLoading={courses.isLoading}
@@ -66,7 +77,7 @@ const HomeScreen = () => {
         isLoading={instructors.isLoading}
         errMess={instructors.errMess}
       />
-    </ScrollView>
+    </Animated.ScrollView>
   );
 };
 
