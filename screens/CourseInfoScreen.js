@@ -108,7 +108,7 @@ const CourseInfoScreen = ({ route }) => {
                   handleSubmit();
                   resetForm();
                 }}
-                color="#5637DD"
+                color="#FB751B"
                 title="Submit"
               ></Button>
             </View>

@@ -9,6 +9,7 @@ const RenderCourse = (props) => {
   const view = useRef();
 
   const isLeftSwipe = ({ dx }) => dx < -200;
+  const isRightSwipe = ({ dx }) => dx > 200;
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -41,6 +42,8 @@ const RenderCourse = (props) => {
           ],
           { cancelable: false }
         );
+      } else if (isRightSwipe(gestureState)) {
+        props.onShowModal();
       }
     },
   });
@@ -77,7 +80,7 @@ const RenderCourse = (props) => {
             <Icon
               name="pencil"
               type="font-awesome"
-              color="#5637DD"
+              color="#FB751B"
               raised
               reverse
               onPress={() => props.onShowModal()}

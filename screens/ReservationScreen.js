@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Switch,
   Button,
-  Modal,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Animatable from "react-native-animatable";
 
 const ReservationScreen = () => {
   const [dancers, setDancers] = useState(1);
@@ -28,7 +29,27 @@ const ReservationScreen = () => {
     console.log("dancers:", dancers);
     console.log("dropIn:", dropIn);
     console.log("date:", date);
-    setShowModal(!showModal);
+
+    Alert.alert(
+      "Begin search?",
+      "Number of Dancers: " +
+        dancers +
+        "\n\nDrop-In: " +
+        dropIn +
+        "\n\nDate: " +
+        date.toLocaleDateString(),
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+          onPress: () => resetForm(),
+        },
+        {
+          text: "OK",
+          onPress: () => resetForm(),
+        },
+      ]
+    );
   };
 
   const resetForm = () => {
@@ -40,81 +61,58 @@ const ReservationScreen = () => {
 
   return (
     <ScrollView>
-      <View style={StyleSheet.formRow}>
-        <Text style={StyleSheet.formLabel}>Number of Dancers:</Text>
-        <Picker
-          style={styles.formItem}
-          selectedValue={dancers}
-          onValueChange={(itemValue) => setDancers(itemValue)}
-        >
-          <Picker.Item label="1" value={1} />
-          <Picker.Item label="2" value={2} />
-          <Picker.Item label="3" value={3} />
-          <Picker.Item label="4" value={4} />
-          <Picker.Item label="5" value={5} />
-          <Picker.Item label="6" value={6} />
-        </Picker>
-      </View>
-      <View styles={styles.formRow}>
-        <Text styles={styles.formLabel}>Drop In:</Text>
-        <Switch
-          style={styles.formItem}
-          value={dropIn}
-          trackColor={{ true: "#5637DD", false: null }}
-          onValueChange={(value) => setDropIn(value)}
-        />
-      </View>
-      <View style={styles.formRow}>
-        <Text style={styles.formLabel}>Date:</Text>
-        <Button
-          onPress={() => setShowCalendar(!showCalendar)}
-          title={date.toLocaleDateString("en-US")}
-          color="#5637DD"
-          accessibilityLabel="Tap me to select a reservation date"
-        />
-      </View>
-      {showCalendar && (
-        <DateTimePicker
-          style={styles.formItem}
-          value={date}
-          mode="date"
-          display="default"
-          onChange={onDateChange}
-        />
-      )}
-      <View style={styles.formRow}>
-        <Button
-          onPress={() => handleReservation()}
-          title="Search Availability"
-          color="#5637DD"
-          accessibilityLabel="Tap me to search for available classes to reserve"
-        />
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={showModal}
-        onRequestClose={() => setShowModal(!showModal)}
-      >
-        <View style={styles.modal}>
-          <Text style={styles.modalTitle}>Search Class Reservations</Text>
-          <Text style={styles.modalText}>Number of Dancers: {dancers}</Text>
-          <Text style={styles.modalText}>
-            Drop-In?: {dropIn ? "Yes" : "No"}
-          </Text>
-          <Text style={styles.modalText}>
-            Date: {date.toLocaleDateString("en-US")}
-          </Text>
-          <Button
-            onPress={() => {
-              setShowModal(!showModal);
-              resetForm();
-            }}
-            color="#5637DD"
-            title="Close"
+      <Animatable.View animation="zoomIn" duration={2000} delay={1000}>
+        <View style={StyleSheet.formRow}>
+          <Text style={StyleSheet.formLabel}>Number of Dancers:</Text>
+          <Picker
+            style={styles.formItem}
+            selectedValue={dancers}
+            onValueChange={(itemValue) => setDancers(itemValue)}
+          >
+            <Picker.Item label="1" value={1} />
+            <Picker.Item label="2" value={2} />
+            <Picker.Item label="3" value={3} />
+            <Picker.Item label="4" value={4} />
+            <Picker.Item label="5" value={5} />
+            <Picker.Item label="6" value={6} />
+          </Picker>
+        </View>
+        <View styles={styles.formRow}>
+          <Text styles={styles.formLabel}>Drop In:</Text>
+          <Switch
+            style={styles.formItem}
+            value={dropIn}
+            trackColor={{ true: "#FB751B", false: null }}
+            onValueChange={(value) => setDropIn(value)}
           />
         </View>
-      </Modal>
+        <View style={styles.formRow}>
+          <Text style={styles.formLabel}>Date:</Text>
+          <Button
+            onPress={() => setShowCalendar(!showCalendar)}
+            title={date.toLocaleDateString("en-US")}
+            color="#FB751B"
+            accessibilityLabel="Tap me to select a reservation date"
+          />
+        </View>
+        {showCalendar && (
+          <DateTimePicker
+            style={styles.formItem}
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
+        <View style={styles.formRow}>
+          <Button
+            onPress={() => handleReservation()}
+            title="Search Availability"
+            color="#FB751B"
+            accessibilityLabel="Tap me to search for available classes to reserve"
+          />
+        </View>
+      </Animatable.View>
     </ScrollView>
   );
 };
@@ -141,7 +139,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    backgroundColor: "#5637DD",
+    backgroundColor: "#FB751B",
     textAlign: "center",
     color: "#fff",
     marginBottom: 20,
