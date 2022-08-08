@@ -118,7 +118,7 @@ const Drawer = createDrawerNavigator();
 
 const screenOptions = {
   headerTintColor: "#fff",
-  headerStyle: { backgroundColor: "#F49565" },
+  headerStyle: { backgroundColor: "#F8751B" },
 };
 
 const HomeNavigator = () => {
@@ -208,7 +208,7 @@ const Main = () => {
     >
       <Drawer.Navigator
         initialRouteName="Home"
-        drawerStyle={{ backgroundColor: "#308DEC" }}
+        drawerStyle={{ backgroundColor: "#D2D6FD" }}
         drawerContent={CustomDrawerContent}
       >
         <Drawer.Screen
