@@ -8,6 +8,7 @@ import {
 } from "@react-navigation/drawer";
 import DirectoryScreen from "./DirectoryScreen";
 import CourseInfoScreen from "./CourseInfoScreen";
+import PromotionsScreen from "./PromotionsScreen";
 import Constants from "expo-constants";
 import HomeScreen from "./HomeScreen";
 import AboutScreen from "./AboutScreen";
@@ -198,6 +199,39 @@ const DirectoryNavigator = () => {
   );
 };
 
+const PromotionsNavigator = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator
+      initialRouteName="Promotions"
+      screenOptions={screenOptions}
+    >
+      <Stack.Screen
+        name="Promotions"
+        component={PromotionsScreen}
+        options={({ navigation }) => ({
+          title: "Promotions",
+          headerLeft: () => (
+            <Icon
+              name="bookmark"
+              type="font-awesome"
+              iconStyle={styles.stackIcon}
+              onPress={() => navigation.toggleDrawer()}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="CourseInfo"
+        component={CourseInfoScreen}
+        options={({ route }) => ({
+          title: route.params.course.name,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
 const CustomDrawerContent = (props) => (
   <DrawerContentScrollView {...props}>
     <View style={styles.drawerHeader}>
@@ -259,7 +293,7 @@ const Main = () => {
                 name="home"
                 type="font-awesome"
                 size={24}
-                iconStyle={{ width: 10 }}
+                iconStyle={{ width: 24 }}
                 color={color}
               />
             ),
@@ -305,6 +339,22 @@ const Main = () => {
             drawerIcon: ({ color }) => (
               <Icon
                 name="heart"
+                type="font-awesome"
+                size={24}
+                iconStyle={{ width: 24 }}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="Promotions"
+          component={PromotionsNavigator}
+          options={{
+            title: "Promotions",
+            drawerIcon: ({ color }) => (
+              <Icon
+                name="bookmark"
                 type="font-awesome"
                 size={24}
                 iconStyle={{ width: 24 }}
