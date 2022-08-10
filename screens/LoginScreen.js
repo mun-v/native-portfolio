@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Image } from "react-native";
 import { CheckBox, Input, Button, Icon } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as ImagePicker from "expo-image-picker";
+import { baseUrl } from "../shared/baseUrl";
+import ADPLogo1 from "../assets/images/ADPLogo1.jpg";
 
 const LoginTab = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -108,6 +111,7 @@ const RegisterTab = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [remember, setRemember] = useState(false);
+  const [imageUrl, setImageUrl] = useState(baseUrl + "images/logo.png");
 
   const handleRegister = () => {
     const userInfo = {
@@ -135,9 +139,34 @@ const RegisterTab = () => {
     }
   };
 
-    return (
-      <ScrollView>
-        <View style={StyleSheet.container}>
+  const getImageFromCamera = async () => {
+    const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (cameraPermission.status === "granted") {
+      const capturedImage = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+      });
+      if (!capturedImage.cancelled) {
+        console.log(capturedImage);
+        setImageUrl(capturedImage.uri);
+      }
+    }
+  };
+
+  return (
+    <ScrollView>
+      <View style={StyleSheet.container}>
+        <View style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={{ uri: imageUrl }}
+              loadingIndicatorSource={ADPLogo1}
+              style={styles.image}
+            />
+            <Button title="Camera" onPress={getImageFromCamera} />
+          </View>
+        </View>
         <Input
           placeholder="Username"
           leftIcon={{ type: "font-awesome", name: "user-o" }}
@@ -154,58 +183,57 @@ const RegisterTab = () => {
           containerStyle={styles.formInput}
           leftIconContainerStyle={styles.formIcon}
         />
-          <Input
-            placeholder="First Name"
-            leftIcon={{ type: "font-awesome", name: "user-o" }}
-            onChangeText={(text) => setFirstName(text)}
-            value={firstName}
-            containerStyle={styles.formInput}
-            leftIconContainerStyle={styles.formIcon}
+        <Input
+          placeholder="First Name"
+          leftIcon={{ type: "font-awesome", name: "user-o" }}
+          onChangeText={(text) => setFirstName(text)}
+          value={firstName}
+          containerStyle={styles.formInput}
+          leftIconContainerStyle={styles.formIcon}
+        />
+        <Input
+          placeholder="Last Name"
+          leftIcon={{ type: "font-awesome", name: "user-o" }}
+          onChangeText={(text) => setLastName(text)}
+          value={lastName}
+          containerStyle={styles.formInput}
+          leftIconContainerStyle={styles.formIcon}
+        />
+        <Input
+          placeholder="Email"
+          leftIcon={{ type: "font-awesome", name: "envelope-o" }}
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+          containerStyle={styles.formInput}
+          leftIconContainerStyle={styles.formIcon}
+        />
+        <CheckBox
+          title="Remember Me"
+          center
+          checked={remember}
+          onPress={() => setRemember(!remember)}
+          containerStyle={styles.formCheckbox}
+        />
+        <View style={styles.formButton}>
+          <Button
+            onPress={() => handleRegister()}
+            title="Register"
+            color="#F8751B"
+            icon={
+              <Icon
+                name="user-plus"
+                type="font-awesome"
+                color="#fff"
+                iconStyle={{ marginRight: 10 }}
+              />
+            }
+            buttonStyle={{ backgroundColor: "#F8751B" }}
           />
-          <Input
-            placeholder="Last Name"
-            leftIcon={{ type: "font-awesome", name: "user-o" }}
-            onChangeText={(text) => setLastName(text)}
-            value={lastName}
-            containerStyle={styles.formInput}
-            leftIconContainerStyle={styles.formIcon}
-          />
-          <Input
-            placeholder="Email"
-            leftIcon={{ type: "font-awesome", name: "envelope-o" }}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            containerStyle={styles.formInput}
-            leftIconContainerStyle={styles.formIcon}
-          />
-          <CheckBox
-            title="Remember Me"
-            center
-            checked={remember}
-            onPress={() => setRemember(!remember)}
-            containerStyle={styles.formCheckbox}
-          />
-          <View style={styles.formButton}>
-            <Button
-              onPress={() => handleRegister()}
-              title="Register"
-              color="#F8751B"
-              icon={
-                <Icon
-                  name="user-plus"
-                  type="font-awesome"
-                  color="#fff"
-                  iconStyle={{ marginRight: 10 }}
-                />
-              }
-              buttonStyle={{ backgroundColor: "#F8751B" }}
-            />
-          </View>
         </View>
-      </ScrollView>
-    );
-  };
-
+      </View>
+    </ScrollView>
+  );
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -265,7 +293,18 @@ const styles = StyleSheet.create({
   formButton: {
     margin: 20,
     marginRight: 40,
-    marginLeft: 40,
+    marginLeft: 20,
+  },
+  imageContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    margin: 10,
+  },
+  image: {
+    width: 60,
+    height: 60,
   },
 });
 
