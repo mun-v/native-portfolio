@@ -1,5 +1,12 @@
 import { useRef } from "react";
-import { Text, View, StyleSheet, PanResponder, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  PanResponder,
+  Alert,
+  Share,
+} from "react-native";
 import { Card, Icon } from "react-native-elements";
 import { baseUrl } from "../../shared/baseUrl";
 import * as Animatable from "react-native-animatable";
@@ -48,6 +55,19 @@ const RenderCourse = (props) => {
     },
   });
 
+  const shareCourse = (title, message, url) => {
+    Share.share(
+      {
+        title,
+        message: `${title}: ${message} ${url}`,
+        url,
+      },
+      {
+        dialogTitle: "Share " + title,
+      }
+    );
+  };
+
   if (course) {
     return (
       <Animatable.View
@@ -84,6 +104,20 @@ const RenderCourse = (props) => {
               raised
               reverse
               onPress={() => props.onShowModal()}
+            />
+            <Icon
+              name="share"
+              type="font-awesome"
+              color="#F8751B"
+              raised
+              reverse
+              onPress={() =>
+                shareCourse(
+                  course.name,
+                  course.description,
+                  baseUrl + course.image
+                )
+              }
             />
           </View>
         </Card>
