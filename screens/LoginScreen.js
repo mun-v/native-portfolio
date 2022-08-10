@@ -111,7 +111,7 @@ const RegisterTab = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [remember, setRemember] = useState(false);
-  const [imageUrl, setImageUrl] = useState(baseUrl + "images/logo.png");
+  const [imageUrl, setImageUrl] = useState(baseUrl + "images/ADPLogo1.jpg");
 
   const handleRegister = () => {
     const userInfo = {
